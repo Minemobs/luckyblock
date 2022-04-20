@@ -3,3 +3,14 @@ version: '${version}'
 main: fr.minemobs.luckyblock.LuckyBlock
 api-version: 1.18
 authors: [ minemobs ]
+description: A simple LuckyBlock plugin
+commands:
+  reloadconfig:
+    aliases:
+      - rlc
+      - rc
+      - lbreload
+    permission: luckyblock.reloadconfig
+    usage: /<command>
+    description: Reload the config file
+    permission-message: You don't have permission to reload the config file

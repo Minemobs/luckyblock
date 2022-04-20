@@ -18,13 +18,19 @@
     "max_count": 1
   },
   {
-    "type": "remove_item",
-    "random": true
+    "type": "random_remove_item"
   },
   {
     "type": "remove_item",
+    "item_types": [
+      "diamond_pickaxe",
+      "diamond.*",
+      "(?s).*_SWORD",
+      "dirt"
+    ],
     "min_count": 1,
-    "max_count": 10
+    "max_count": 10,
+    "all_items": true
   },
   {
     "type": "spawn_entity",

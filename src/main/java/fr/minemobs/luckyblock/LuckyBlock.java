@@ -16,21 +16,25 @@ import java.io.FileReader;
 public final class LuckyBlock extends JavaPlugin {
 
     public final Gson gson = new GsonBuilder().create();
-    private static LBEvents[] events;
+    private LBEvents[] events;
+    private File configFile;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        Bukkit.addRecipe(new ShapedRecipe(new NamespacedKey(this, "lucky_block"), LuckyBlockListener.LUCKY_BLOCK)
+        Bukkit.addRecipe(new ShapedRecipe(new NamespacedKey(this, "lucky_block"), LuckyBlockListener.LUCKY_BLOCK.clone())
                 .shape("GGG", "GDG", "GGG").setIngredient('G', Material.GOLD_INGOT).setIngredient('D', Material.DROPPER));
-        Bukkit.getPluginManager().registerEvents(new LuckyBlockListener(), this);
-        File configFile = new File(getDataFolder(), "config.json");
+        configFile = new File(getDataFolder(), "config.json");
         if (!configFile.exists()) saveResource("config.json", false);
         try {
             events = gson.fromJson(new FileReader(configFile), LBEvents[].class);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            getLogger().severe(() -> "Could not find config.json " + e.getMessage());
+            e.printStackTrace();
+            events = new LBEvents[0];
         }
+        Bukkit.getPluginManager().registerEvents(new LuckyBlockListener(this), this);
+        this.getCommand("reloadconfig").setExecutor(new ReloadConfigCommand(this));
     }
 
     @Override
@@ -38,7 +42,15 @@ public final class LuckyBlock extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public static LBEvents[] getEvents() {
+    public LBEvents[] getEvents() {
         return events;
+    }
+
+    void setEvents(LBEvents[] events) {
+        this.events = events;
+    }
+
+    public File getConfigFile() {
+        return configFile;
     }
 }
