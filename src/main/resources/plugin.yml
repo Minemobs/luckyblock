@@ -1,0 +1,5 @@
+name: LuckyBlock
+version: '${version}'
+main: fr.minemobs.luckyblock.LuckyBlock
+api-version: 1.18
+authors: [ minemobs ]
